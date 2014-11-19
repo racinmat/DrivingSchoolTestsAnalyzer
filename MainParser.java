@@ -11,10 +11,13 @@ public class MainParser {
 //        downloader.downloadLinksFromAllSites();
 //        downloader.downloadQuestionsAndAnswers();
         List<Question> questions;
+
 //        questions = downloader.parseQuestionsAndAnswersFromHTMLFiles();
 //        saveAnswersToFile(questions);
+
         questions = loadAnswersFromFile();
         calculateStatistics(questions);
+
 //        String name = "questionsAndAnswers/4-stat_znamena";
 //        File page = new File(name);
 //        Connection connection = Jsoup.connect("http://www.autoskola-testy.cz/prohlizeni_otazek.php?otazka=471-muze_byt_schopnost_k_rizeni_vozidla_ovlivnena_i_po_poziti_maleho_mnozstvi_alkoholu_napr_pul_litr");
@@ -53,7 +56,7 @@ public class MainParser {
     }
 
     public static void calculateStatistics(List<Question> questions) throws Exception {
-        IAnswerResolver resolver = new CharacterAnswerResolver();
+        BaseAnswerResolver resolver = new WordAnswerResolver();
 
         int shortAnswers = 0;
         int mediumAnswers = 0;
@@ -82,9 +85,10 @@ public class MainParser {
                 }
             }
         }
-        double percentShort = ( (double) shortAnswers/ (double) totalWithDifferentLengths)*100;
-        double percentMedium = ( (double) mediumAnswers/ (double) totalWithDifferentLengths)*100;
-        double percentLong = ( (double) longAnswers/ (double) totalWithDifferentLengths)*100;
+        double percentShort = ( (double) shortAnswers/ (double) totalAnswers)*100;
+        double percentMedium = ( (double) mediumAnswers/ (double) totalAnswers)*100;
+        double percentLong = ( (double) longAnswers/ (double) totalAnswers)*100;
+        double percentUnsure = ( (double) (sameLengths+sameLengthsInCorrectAnswer)/ (double) totalAnswers)*100;
         double percentTotal = percentLong+percentMedium+percentShort;
         System.out.println("výsledky");
         System.out.println("procentuálně");
@@ -94,6 +98,8 @@ public class MainParser {
         System.out.println(percentMedium+"%");
         System.out.println("nejdelší");
         System.out.println(percentLong+"%");
+        System.out.println("neurčitě");
+        System.out.println(percentUnsure+"%");
         System.out.println("celkem");
         System.out.println(percentTotal+"%");
         System.out.println("konkrétně");
@@ -103,6 +109,8 @@ public class MainParser {
         System.out.println(mediumAnswers);
         System.out.println("nejdelší");
         System.out.println(longAnswers);
+        System.out.println("neurčitě");
+        System.out.println(sameLengths+sameLengthsInCorrectAnswer);
         System.out.println("celkem");
         System.out.println(totalWithDifferentLengths);
 
@@ -116,7 +124,7 @@ public class MainParser {
         System.out.println(totalAnswers);
 
         System.out.println("kontrola součtu");
-        System.out.println(sameLengths+totalWithDifferentLengths);
+        System.out.println(sameLengths+totalWithDifferentLengths+sameLengthsInCorrectAnswer);
 
     }
 
