@@ -56,7 +56,7 @@ public class MainParser {
     }
 
     public static void calculateStatistics(List<Question> questions) throws Exception {
-        BaseAnswerResolver resolver = new WordAnswerResolver();
+        BaseAnswerResolver resolver = new WordsAndCharactersAnswerResolver();
 
         int shortAnswers = 0;
         int mediumAnswers = 0;
@@ -88,10 +88,22 @@ public class MainParser {
         double percentShort = ( (double) shortAnswers/ (double) totalAnswers)*100;
         double percentMedium = ( (double) mediumAnswers/ (double) totalAnswers)*100;
         double percentLong = ( (double) longAnswers/ (double) totalAnswers)*100;
+
+        double percentShortDifferent = ( (double) shortAnswers/ (double) totalWithDifferentLengths)*100;
+        double percentMediumDifferent = ( (double) mediumAnswers/ (double) totalWithDifferentLengths)*100;
+        double percentLongDifferent = ( (double) longAnswers/ (double) totalWithDifferentLengths)*100;
+
         double percentUnsure = ( (double) (sameLengths+sameLengthsInCorrectAnswer)/ (double) totalAnswers)*100;
         double percentTotal = percentLong+percentMedium+percentShort;
+        double percentTotalWIthUnsure = percentUnsure+percentTotal;
         System.out.println("výsledky");
         System.out.println("procentuálně");
+        System.out.println("nejkratší bez nejasných případů");
+        System.out.println(percentShortDifferent+"%");
+        System.out.println("středně dlouhé bez nejasných případů");
+        System.out.println(percentMediumDifferent+"%");
+        System.out.println("nejdelší bez nejasných případů");
+        System.out.println(percentLongDifferent+"%");
         System.out.println("nejkratší");
         System.out.println(percentShort+"%");
         System.out.println("středně dlouhé");
@@ -102,26 +114,28 @@ public class MainParser {
         System.out.println(percentUnsure+"%");
         System.out.println("celkem");
         System.out.println(percentTotal+"%");
-        System.out.println("konkrétně");
-        System.out.println("nejkratší");
-        System.out.println(shortAnswers);
-        System.out.println("středně dlouhé");
-        System.out.println(mediumAnswers);
-        System.out.println("nejdelší");
-        System.out.println(longAnswers);
-        System.out.println("neurčitě");
-        System.out.println(sameLengths+sameLengthsInCorrectAnswer);
-        System.out.println("celkem");
-        System.out.println(totalWithDifferentLengths);
-
-        System.out.println("stejně dlouhé všechny odpovědi");
-        System.out.println(sameLengths);
-
-        System.out.println("stejně dlouhá správná odpověď jako vedlejší");
-        System.out.println(sameLengthsInCorrectAnswer);
-
-        System.out.println("celkem po přičtení otázek se stejně dlouhými odpověďmi");
-        System.out.println(totalAnswers);
+        System.out.println("celkem i s neurčitými");
+        System.out.println(percentTotalWIthUnsure+"%");
+//        System.out.println("konkrétně");
+//        System.out.println("nejkratší");
+//        System.out.println(shortAnswers);
+//        System.out.println("středně dlouhé");
+//        System.out.println(mediumAnswers);
+//        System.out.println("nejdelší");
+//        System.out.println(longAnswers);
+//        System.out.println("neurčitě");
+//        System.out.println(sameLengths+sameLengthsInCorrectAnswer);
+//        System.out.println("celkem");
+//        System.out.println(totalWithDifferentLengths);
+//
+//        System.out.println("stejně dlouhé všechny odpovědi");
+//        System.out.println(sameLengths);
+//
+//        System.out.println("stejně dlouhá správná odpověď jako vedlejší");
+//        System.out.println(sameLengthsInCorrectAnswer);
+//
+//        System.out.println("celkem po přičtení otázek se stejně dlouhými odpověďmi");
+//        System.out.println(totalAnswers);
 
         System.out.println("kontrola součtu");
         System.out.println(sameLengths+totalWithDifferentLengths+sameLengthsInCorrectAnswer);
